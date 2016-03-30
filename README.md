@@ -1,52 +1,115 @@
-resharper-rejs
+Resharper-ReTs (Refactorings for TypeScript)
 ==============
 
-Refactorings for JavaScript
+Contain some refactorings for TypeScript language.
+
+Mainly useful for converting old-fashion code into **ES6 Class** in Typescript.
+
+May be useful for **Angular 1x code** (migration) converting to 2x (in progress), because it actively use ES6 Classes in Typescript
+
 
 ###Available quick-fixes
-####Convert object's property access from reference form to indexed form and vise-versa
 
-Example
+####Replace Prototype-styled code to ES6 Class
 
 ```javascript
-var z = x.y; // => var z = x['y'];
-var z = x['y']; // => var z = x.y;
-```
-
-####Detect function invocations with `Function.prototype.call` with the same context as the function's owner.
-
-Example
-```javascript
-var x = {
-  someMethod: function() {
-    //something
-  }
+Namespace.MyClass = function/*{caret}*/(field2) {
+	this._field1 = false;
+	this._field2 = field2;
 };
-
-x.someMethod.call(x, 1, 2, 3);
+Namespace.MyClass.prototype = {
+	f1: function() {},
+	private _f2: function() {}
+};
 ```
 
-The plugin will suggest to replace the `x.someMethod.call(x, 1, 2, 3)` expression with `x.someMethod(1, 2, 3)`
-
-####Remove unreachable code
-
-###Available warnings
-####Detect access to externally modified clousre.
+Or:
 ```javascript
-for (var i = 0; i < 10; i++) {
-    setTimeout(function() {
-        console.log(i); // here we have access to an externally modified closure
-    });
-}
+Namespace.MyClass = function/*{caret}*/(field2) {
+	this._field1 = false;
+	this._field2 = field2;
+};
+Namespace.MyClass.prototype.f1 = function () { };
+Namespace.MyClass.prototype._f1 = function () { };
 ```
 
-###Installation
+By using "Convert to ES6 Class" on function (see caret position in example) will be replaced by: 
+```javascript
+module Namespace{
+	export class MyClass {
+		private _field1=null;
+		private _field2=null;
 
-Available in [ReSharper Gallery](http://resharper-plugins.jetbrains.com/packages/ReSharper.ReJS/)
+		constructor(field2) {
+			this._field1 = false;
+			this._field2 = field2;
+		}
 
-###Donations
+		f1() {}
+		private _f2() {}
+	}
+};
+;
+```
 
-Donations are welcome to 
+####Replace Static-styled code to ES6 Class
 
-* BTC: 19woiHcAZqDBLDAsi5QDVGwqxdaQawwt6J
-* LTC: LP3wMjumuutC45MVwqbNitavUXFqAD8YjU
+```javascript
+Namespace.MyStaticClass/*{caret}*/ = {
+	f1: function() {},
+	_f2: function() {}
+};
+```
+
+By using "Convert to ES6 Static Class" will be replaced by: 
+
+```javascript
+module Namespace {
+	export class MyStaticClass {
+		static f1() {}
+		private static _f2() {}
+	}
+};
+```
+
+
+####Convert closure to ES6 Class
+
+```javascript
+angular.controller("TestCtrl", ["$scope", "mainFormModel", "dataAccess", function ($scope, mainFormModel, dataAccess) {
+	this.contrF1 = function (one) { };
+	$scope.scopeF2 = function (two) { };
+	$scope.scopeF3 = function (three) { };
+}
+]);
+```javascript
+
+By using "Convert closure to ES6 Class" will be replaced by: 
+
+```javascript
+module SomeNamespace {
+	export class SomeClass {
+		public $scope=null;
+		public mainFormModel=null;
+		public dataAccess=null;
+
+		constructor($scope, mainFormModel, dataAccess) {
+			this.dataAccess = this.dataAccess;
+			this.mainFormModel = this.mainFormModel;
+			this.$scope = this.$scope;;
+			this.$scope.scopeF2 = this.scopeF2.bind(this);;
+			this.$scope.scopeF3 = this.scopeF3.bind(this);;
+		}
+
+		contrF1(one) {}
+		scopeF2(two) {}
+		scopeF3(three) {}
+	}
+}
+angular.controller("TestCtrl", ["$scope", "mainFormModel", "dataAccess", SomeNamespace.SomeClass]);
+```
+
+####Notes
+Fork of "Resharper-ReJs" by Alexander Zaytsev
+
+NuGet setup in progress.
