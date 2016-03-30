@@ -7,6 +7,7 @@ using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.Threading;
 using NUnit.Framework;
 using ReSharper.ReJS;
+using ReSharper.ReJS.Tests;
 
 /// <summary>
 /// Test environment. Must be in the global namespace.
@@ -23,7 +24,7 @@ public class TestEnvironmentAssembly : ReSharperTestEnvironmentAssembly
         // Test assembly
         yield return Assembly.GetExecutingAssembly();
 
-        yield return typeof (ReJsHighlightingStage).Assembly;
+        yield return typeof (ReplaceByClassForTsAction).Assembly;
     }
 
     public override void SetUp()
@@ -31,7 +32,8 @@ public class TestEnvironmentAssembly : ReSharperTestEnvironmentAssembly
         base.SetUp();
         ReentrancyGuard.Current.Execute(
             "LoadAssemblies",
-            () => Shell.Instance.GetComponent<AssemblyManager>().LoadAssemblies(
+            () => 
+            Shell.Instance.GetComponent<AssemblyManager>().LoadAssemblies(
                 GetType().Name,
                 GetAssembliesToLoad()));
     }

@@ -1,0 +1,24 @@
+﻿module SomeNamespace {
+	export class TestCtrl {
+		public contrF1=null;
+		public $scope=null;
+		public mainFormModel=null;
+		public dataAccess=null;
+
+		constructor($scope, mainFormModel, dataAccess) {
+			this.dataAccess = this.dataAccess;
+			this.mainFormModel = this.mainFormModel;
+			this.$scope = this.$scope;;
+			this.$scope.scopeF2 = this.scopeF2.bind(this);;
+			this.$scope.scopeF3 = this.scopeF3.bind(this);;
+		}
+
+		contrF1(one) {}
+
+		scopeF2(two) {}
+
+		scopeF3(three) {}
+	}
+}
+
+angular.controller("TestCtrl", ["$scope", "mainFormModel", "dataAccess", SomeNamespace.TestCtrl]);

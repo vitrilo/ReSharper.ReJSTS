@@ -1,8 +1,6 @@
 using JetBrains.ReSharper.Psi;
-#if RESHARPER9
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.JavaScript.Parsing;
-#endif
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 
@@ -25,7 +23,8 @@ namespace ReSharper.ReJS
             Node = declaration;
             IsWriteUsage = true;
             FunctionLike = declaration.GetContainingNode<IJsFunctionLike>();
-            DeclaredElement = declaration.DeclaredElement;
+            //DeclaredElement = declaration.DeclaredElement;
+			DeclaredElement = (IDeclaredElement)declaration.FirstChild;
         }
 
         public bool IsWriteUsage { get; private set; }

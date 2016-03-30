@@ -7,11 +7,7 @@ using JetBrains.ReSharper.Psi.JavaScript.Services;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.TextControl;
 using JetBrains.Util;
-#if !RESHARPER9
-using JetBrains.ReSharper.Intentions.Extensibility;
-#else
 using JetBrains.ReSharper.Feature.Services.QuickFixes;
-#endif
 
 namespace ReSharper.ReJS
 {

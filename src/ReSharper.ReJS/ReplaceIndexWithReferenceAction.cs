@@ -1,20 +1,15 @@
 using System;
-using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.JavaScript.Bulbs;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.JavaScript.Services;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.TextControl;
 using JetBrains.Util;
-#if !RESHARPER9
-using JetBrains.ReSharper.Intentions.Extensibility;
-#else
 using JetBrains.ReSharper.Feature.Services.ContextActions;
 using JetBrains.ReSharper.Resources.Shell;
-#endif
+
 
 namespace ReSharper.ReJS
 {
