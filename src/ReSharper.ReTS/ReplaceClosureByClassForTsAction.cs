@@ -1,19 +1,18 @@
 using System;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.ContextActions;
 using JetBrains.ReSharper.Feature.Services.JavaScript.Bulbs.TypeScript;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.JavaScript.Impl.Services.TypeScript;
 using JetBrains.ReSharper.Psi.JavaScript.Tree.TypeScript;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
 using JetBrains.Util;
-using ReSharper.ReJS.Shared;
-using JetBrains.ReSharper.Feature.Services.ContextActions;
-using JetBrains.ReSharper.Resources.Shell;
+using ReSharper.ReTs.Shared;
 
-
-namespace ReSharper.ReJS
+namespace ReSharper.ReTs
 {
 	[ContextAction(Name = "ReplaceClosureByClassForTsAction", Description = "Replaces Closure by class in ES6 style",
 		Group = "TypeScript")]

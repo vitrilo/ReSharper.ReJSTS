@@ -1,11 +1,8 @@
-#if !RESHARPER9
-using JetBrains.ReSharper.Intentions.JavaScript.Tests.ContextActions;
-#else
 using JetBrains.ReSharper.FeaturesTestFramework.Intentions;
-#endif
 using NUnit.Framework;
+using ReSharper.ReTs;
 
-namespace ReSharper.ReJS.Tests
+namespace ReSharper.ReTS.Tests
 {
     [TestFixture]
     public class ReplaceReferenceWithIndexActionTest : JavaScriptContextActionExecuteTestBase<ReplaceReferenceWithIndexAction>

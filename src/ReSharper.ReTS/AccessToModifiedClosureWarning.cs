@@ -4,7 +4,7 @@ using JetBrains.ReSharper.Psi.JavaScript.LanguageImpl;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 
-namespace ReSharper.ReJS
+namespace ReSharper.ReTs
 {
     [ConfigurableSeverityHighlighting(HIGHLIGHTING_ID, JavaScriptLanguage.Name, OverlapResolve = OverlapResolveKind.WARNING)]
     public class AccessToModifiedClosureWarning : IHighlighting

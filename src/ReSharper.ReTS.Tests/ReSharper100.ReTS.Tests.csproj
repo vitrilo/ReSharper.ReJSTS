@@ -7,8 +7,8 @@
     <ProjectGuid>{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClassLibrary1Test</RootNamespace>
-    <AssemblyName>ClassLibrary1Test</AssemblyName>
+    <RootNamespace>ReSharper.ReTS.Tests</RootNamespace>
+    <AssemblyName>ReSharper.ReTS.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>

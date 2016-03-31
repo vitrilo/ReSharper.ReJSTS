@@ -2,14 +2,13 @@ using System;
 using System.Linq;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Bulbs;
+using JetBrains.ReSharper.Feature.Services.QuickFixes;
 using JetBrains.ReSharper.Psi.JavaScript.Services;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.TextControl;
 using JetBrains.Util;
-using JetBrains.ReSharper.Feature.Services.QuickFixes;
 
-namespace ReSharper.ReJS
+namespace ReSharper.ReTs
 {
     [QuickFix]
     public sealed class CallWithSameContextWarningFix : QuickFixBase

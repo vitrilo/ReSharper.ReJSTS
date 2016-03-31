@@ -1,6 +1,6 @@
 ﻿using JetBrains.ReSharper.Psi.JavaScript.Tree.TypeScript;
 
-namespace ReSharper.ReJS.Shared
+namespace ReSharper.ReTs.Shared
 {
 	public static class Ext
 	{

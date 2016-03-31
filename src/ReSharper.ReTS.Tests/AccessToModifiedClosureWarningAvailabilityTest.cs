@@ -1,14 +1,10 @@
 ﻿using JetBrains.ReSharper.Feature.Services.Daemon;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.FeaturesTestFramework.Intentions;
 using JetBrains.ReSharper.Psi;
 using NUnit.Framework;
-#if !RESHARPER9
-using JetBrains.ReSharper.Intentions.Test;
-#else
-using JetBrains.ReSharper.FeaturesTestFramework.Intentions;
-#endif
+using ReSharper.ReTs;
 
-namespace ReSharper.ReJS.Tests
+namespace ReSharper.ReTS.Tests
 {
     [TestFixture]
     public class AccessToModifiedClosureWarningAvailabilityTest : QuickFixAvailabilityTestBase

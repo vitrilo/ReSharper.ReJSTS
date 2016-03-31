@@ -8,7 +8,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 
-namespace ReSharper.ReJS
+namespace ReSharper.ReTs
 {
     public class ReJsHighlightingStageProcess : JavaScriptDaemonStageProcessBase
     {

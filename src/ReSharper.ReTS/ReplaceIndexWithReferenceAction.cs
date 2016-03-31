@@ -1,17 +1,16 @@
 using System;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.ContextActions;
 using JetBrains.ReSharper.Feature.Services.JavaScript.Bulbs;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.JavaScript.Services;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
+using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
 using JetBrains.Util;
-using JetBrains.ReSharper.Feature.Services.ContextActions;
-using JetBrains.ReSharper.Resources.Shell;
 
-
-namespace ReSharper.ReJS
+namespace ReSharper.ReTs
 {
     [ContextAction(Name = "ReplaceIndexWithReference", Description = "Replaces index expression with reference expression", Group = "JavaScript")]
     public class ReplaceIndexWithReferenceAction : ContextActionBase

@@ -4,7 +4,8 @@ using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
 
-namespace ReSharper.ReJS
+
+namespace ReSharper.ReTs
 {
     [DaemonStage(StagesBefore = new[] { typeof (LanguageSpecificDaemonStage) })]
     public class ReJsHighlightingStage : JavaScriptDaemonStageBase

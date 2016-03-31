@@ -158,8 +158,9 @@
     <Compile Include="ZoneMarker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.ReSharper100.ReJS.config" />
-    <None Include="ReSharper.ReJS.R100.nuspec" />
+    <None Include="ReSharper.ReTS.R100.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

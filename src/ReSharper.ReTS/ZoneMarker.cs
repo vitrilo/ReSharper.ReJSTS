@@ -2,7 +2,7 @@
 using JetBrains.ReSharper.Feature.Services;
 using JetBrains.ReSharper.Psi.JavaScript;
 
-namespace ReSharper.ReJS
+namespace ReSharper.ReTs
 {
     [ZoneMarker]
     public class ZoneMarker : IRequire<ICodeEditingZone>, IRequire<ILanguageJavaScriptZone> { }

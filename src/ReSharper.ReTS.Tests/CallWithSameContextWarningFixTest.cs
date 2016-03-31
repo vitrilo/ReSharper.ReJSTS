@@ -1,11 +1,8 @@
-#if !RESHARPER9
-using JetBrains.ReSharper.Intentions.JavaScript.Tests.QuickFixesTests;
-#else
 using JetBrains.ReSharper.FeaturesTestFramework.Intentions;
-#endif
 using NUnit.Framework;
+using ReSharper.ReTs;
 
-namespace ReSharper.ReJS.Tests
+namespace ReSharper.ReTS.Tests
 {
     [TestFixture]
     public class CallWithSameContextWarningFixTest : JavaScriptQuickFixTestBase<CallWithSameContextWarningFix>

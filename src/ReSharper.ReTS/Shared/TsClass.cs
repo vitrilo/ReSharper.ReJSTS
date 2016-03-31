@@ -9,7 +9,7 @@ using JetBrains.ReSharper.Psi.JavaScript.Tree.TypeScript;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
 
-namespace ReSharper.ReJS.Shared
+namespace ReSharper.ReTs.Shared
 {
 	public class TsClass
 	{
