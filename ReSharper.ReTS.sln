@@ -10,9 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AA635E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReSharper100", "ReSharper100", "{D68840A6-F883-45E4-A6CD-D4C4DADB5A2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper100.ReJS", "src\ReSharper.ReJS\ReSharper100.ReJS.csproj", "{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper100.ReTS", "src\ReSharper.ReTS\ReSharper100.ReTS.csproj", "{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper100.ReJS.Tests", "src\ReSharper.ReJS.Tests\ReSharper100.ReJS.Tests.csproj", "{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper100.ReTS.Tests", "src\ReSharper.ReTS.Tests\ReSharper100.ReTS.Tests.csproj", "{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
