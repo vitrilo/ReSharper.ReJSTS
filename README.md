@@ -82,7 +82,7 @@ angular.controller("TestCtrl", ["$scope", "mainFormModel", "dataAccess", functio
 	$scope.scopeF3 = function (three) { };
 }
 ]);
-```javascript
+```
 
 By using "Convert closure to ES6 Class" will be replaced by: 
 
@@ -109,7 +109,11 @@ module SomeNamespace {
 angular.controller("TestCtrl", ["$scope", "mainFormModel", "dataAccess", SomeNamespace.SomeClass]);
 ```
 
+####Install
+
+Available in [ReSharper Gallery](https://resharper-plugins.jetbrains.com/packages/ReSharper.ReTs.R100/)
+
+- Comartible with Resharper #10 (any Visual Studio)
+
 ####Notes
 Fork of "Resharper-ReJs" by Alexander Zaytsev
-
-NuGet setup in progress.

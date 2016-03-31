@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>ReSharper.ReJsTs.R100</id>
-    <version>0.6.8.15</version>
-    <title>ReSharper ReJsTs</title>
-    <authors>Alexander Zaytsev, Anton Bogdan</authors>
+    <id>ReSharper.ReTs.R100</id>
+    <version>0.6.8.16</version>
+    <title>ReSharper ReTS</title>
+    <authors>Anton Bogdan, Alexander Zaytsev</authors>
     <owners>Hazzik</owners>
-    <licenseUrl>https://github.com/hazzik/ReSharper.ReJS/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/hazzik/ReSharper.ReJS</projectUrl>
+    <licenseUrl>https://github.com/vitrilo/ReSharper.ReTS/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/vitrilo/ReSharper.ReTS</projectUrl>
     <!--<iconUrl></iconUrl>-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A set of refactorings for JavaScript and TypeScript</description>
+    <description>A set of refactorings for TypeScript</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright © Alexander Zaytsev, Anton Bogdan 2013-2015</copyright>
+    <copyright>Copyright © Anton Bogdan, Alexander Zaytsev 2013-2016</copyright>
     <tags>ReSharper Refactorings JavaScript TypeScript</tags>
     <dependencies>
 		<dependency id="Wave" version="[4.0]" />

@@ -1,12 +1,10 @@
-Namespace.SubNamespace.PageClass = function/*{caret}*/(contentUrl) {
-	this._needInit = false;
+Namespace.SubNamespace.MyClass = function/*{caret}*/(field2) {
+	this._field1 = false;
+	this._field2 = field2;
 };
 
-Namespace.SubNamespace.PageClass.prototype = {
-	getIsMobile: function () {
-		return true;
-	},
-	getSystemSwitcher: function () {
-		return this._needInit;
-	}
+Namespace.SubNamespace.MyClass.prototype = {
+	f1: function () {},
+	_f2: function () {}
 }
+Namespace.SubNamespace.MyClass.f1Static = function() {};
