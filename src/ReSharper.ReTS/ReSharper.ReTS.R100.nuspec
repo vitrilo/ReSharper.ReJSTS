@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>ReSharper.ReTs.R100</id>
-    <version>0.6.8.17</version>
+    <version>0.6.9.3</version>
     <title>ReSharper ReTS</title>
     <authors>Anton Bogdan, Alexander Zaytsev</authors>
     <owners>Hazzik</owners>

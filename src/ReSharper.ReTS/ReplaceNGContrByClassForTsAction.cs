@@ -83,22 +83,23 @@ namespace ReSharper.ReTs
 			var arguments = _indexInvocation.Arguments.ToArray();
 			var info = new TsClass();
 			var contrName = arguments[0].GetText().Trim('"');
-			info.NameFull = "SomeNamespace." + contrName.Substring(0, 1).ToUpper() + contrName.Substring(1);
-
+			info.NameFull = contrName.Substring(0, 1).ToUpper() + contrName.Substring(1);
+			ITsFunctionExpression function = null;
 			var last = arguments[arguments.Length - 1];
 			if (last is ITsFunctionExpression)
 			{
-				info.ConstructorFunction = last as ITsFunctionExpression;
+				function = last as ITsFunctionExpression;
 			}
 			else if (last is ITsArrayLiteral)
 			{
 				var arr = last as ITsArrayLiteral;
-				info.ConstructorFunction = arr.ArrayElements[arr.ArrayElements.Count - 1] as ITsFunctionExpression;
+				function = arr.ArrayElements[arr.ArrayElements.Count - 1] as ITsFunctionExpression;
 			}
 			else
 			{
 				return null;
 			}
+			info.ConstructorFunction = new TsFunction(function);
 			TsElementFactory factory = TsElementFactory.GetInstance(_indexInvocation);
 			using (WriteLockCookie.Create())
 			{
@@ -107,9 +108,9 @@ namespace ReSharper.ReTs
 				info.FindAndMoveNgMethodsInsideFunction(info.ConstructorFunction.Block);
 				info.CreateFieldsFromConstructorParams();
 				//Replace Ng Controller body to its class name
-				ModificationUtil.ReplaceChild(info.ConstructorFunction, factory.CreateRefenceName(info.NameFull));
+				ModificationUtil.ReplaceChild(function, factory.CreateRefenceName(info.NameFull));
 				//Insert ES6 class Before
-				ModificationUtil.AddChildBefore(parent.Parent, parent, factory.CreateModuleMember(info.TransformForTypescript(true)));
+				ModificationUtil.AddChildBefore(parent.Parent, parent, factory.CreateStatement(info.TransformForTypescript(true)));
 			}
 			
 			return null;

@@ -72,12 +72,12 @@ namespace ReSharper.ReTs
 			//JetBrains.ReSharper.Psi.JavaScript.Tree.ITsFunctionExpressionSignature
 
 			var index = _provider.GetSelectedElement<ITsSimpleAssignmentExpression>(true, true);
-			
+			_indexExpression = null;
+			_indexDeclaration = null;
 			if (index != null && index.IsValid() && index.Source is ITsFunctionExpression && index.Dest is ITsReferenceExpression)
 			{
 				_indexExpression = index;
 				_replacement = "Convert to ES6 Class";
-					//string.Format("{0}.{1}", index.IndexedExpression.GetText(), index.AccessedPropertyName);
 				return true;
 			}
 
@@ -85,49 +85,100 @@ namespace ReSharper.ReTs
 			{
 				_indexExpression = index;
 				_replacement = "Convert to ES6 Static Class";
-				//string.Format("{0}.{1}", index.IndexedExpression.GetText(), index.AccessedPropertyName);
 				return true;
 			}
+
+			var indexDeclaration = _provider.GetSelectedElement<ITsFunctionStatement>(true, true);
+			if (indexDeclaration != null && indexDeclaration.IsValid())
+			{
+				_indexDeclaration = indexDeclaration;
+				_replacement = "Convert to ES6 Class";
+				return true;
+			}
+
+
 			return false;
 		}
 
-		
 		protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
 		{
-			var parent = TsExpressionStatementNavigator.GetByExpression(TsCompoundExpressionNavigator.GetByExpression(_indexExpression));
-			var info = new TsClass();
-			if(_indexExpression.Source is ITsFunctionExpression && _indexExpression.Dest is ITsReferenceExpression)
+			if (_indexExpression != null)
 			{
-				info.NameFull = _indexExpression.Dest.GetText();
-				info.Sources.Add(_indexExpression);
-				info.ConstructorFunction = _indexExpression.Source as ITsFunctionExpression;
+				ExecuteOnExpression(_indexExpression, progress);
+			}
+			else if (_indexDeclaration != null)
+			{
+				ExecuteOnDeclaration(_indexDeclaration, progress);
+			}
+			return null;
+		}
+
+		protected Action<ITextControl> ExecuteOnExpression(ITsSimpleAssignmentExpression index, IProgressIndicator progress)
+		{
+			var start = TsExpressionStatementNavigator.GetByExpression(TsCompoundExpressionNavigator.GetByExpression(index));
+			var info = new TsClass();
+			if (index.Source is ITsFunctionExpression && index.Dest is ITsReferenceExpression)
+			{
+				info.NameFull = index.Dest.GetText();
+				info.Sources.Add(index);
+				info.ConstructorFunction = new TsFunction(index.Source as ITsFunctionExpression);
 				info.FindFieldsInsideFunction(info.ConstructorFunction.Block);
-				if (parent != null)
+				if (start != null)
 				{
-					var prot = info.FindPrototype(parent.NextSibling);
+					var prot = info.FindPrototype(start.NextSibling);
 					if (prot != null)
 					{
 						info.Sources.Add(prot.Item1);
 						info.AnalyzePrototype(prot.Item2);
 					}
-					else
-					{
-						info.CollectPrototypeSeparateMethods(parent.NextSibling);
-					}
+					info.CollectPrototypeSeparateMethods(start.NextSibling);
 				}
-				
+
 			}
-			else if(_indexExpression.Source is ITsObjectLiteral && _indexExpression.Dest is ITsReferenceExpression)
+			else if (index.Source is ITsObjectLiteral && index.Dest is ITsReferenceExpression)
 			{
-				info.NameFull = _indexExpression.Dest.GetText();
-				info.Sources.Add(_indexExpression);
-				info.AnalyzeStaticClass(_indexExpression.Source as ITsObjectLiteral);
+				info.NameFull = index.Dest.GetText();
+				info.Sources.Add(index);
+				info.AnalyzeStaticClass(index.Source as ITsObjectLiteral);
 			}
 
-			TsElementFactory factory = TsElementFactory.GetInstance(_indexExpression);
+			TsElementFactory factory = TsElementFactory.GetInstance(index);
 			using (WriteLockCookie.Create())
 			{
-				ModificationUtil.ReplaceChild(info.Sources[0], factory.CreateModuleMember(info.TransformForTypescript()));
+				ModificationUtil.ReplaceChild(info.Sources[0], factory.CreateStatement(info.TransformForTypescript()));
+				for (var i = 1; i < info.Sources.Count; i++)
+				{
+					ModificationUtil.DeleteChild(info.Sources[i]);
+				}
+			}
+
+			return null;
+		}
+
+		protected Action<ITextControl> ExecuteOnDeclaration(ITsFunctionStatement index, IProgressIndicator progress)
+		{
+			var start = index;
+			var info = new TsClass();
+			
+			info.NameFull = index.DeclaredName;
+			info.Sources.Add(index);
+			info.ConstructorFunction = new TsFunction(index);
+			info.FindFieldsInsideFunction(info.ConstructorFunction.Block);
+			if (start != null)
+			{
+				var prot = info.FindPrototype(start.NextSibling);
+				if (prot != null)
+				{
+					info.Sources.Add(prot.Item1);
+					info.AnalyzePrototype(prot.Item2);
+				}
+				info.CollectPrototypeSeparateMethods(start.NextSibling);
+			}
+
+			TsElementFactory factory = TsElementFactory.GetInstance(index);
+			using (WriteLockCookie.Create())
+			{
+				ModificationUtil.ReplaceChild(info.Sources[0], factory.CreateStatement(info.TransformForTypescript()));
 				for (var i = 1; i < info.Sources.Count; i++)
 				{
 					ModificationUtil.DeleteChild(info.Sources[i]);
@@ -140,6 +191,7 @@ namespace ReSharper.ReTs
 		private readonly ITypeScriptContextActionDataProvider _provider;
 		private ITsSimpleAssignmentExpression _indexExpression;
 		private string _replacement = "None";
+		private ITsFunctionStatement _indexDeclaration;
 
 		#region Nested types
 

@@ -92,7 +92,7 @@ namespace ReSharper.ReTs
 			var info = new TsClass();
 			info.NameFull = "SomeNamespace.SomeClass";
 
-			info.ConstructorFunction = _index;
+			info.ConstructorFunction = new TsFunction(_index);
 
 			TsElementFactory factory = TsElementFactory.GetInstance(_index);
 			using (WriteLockCookie.Create())
@@ -102,9 +102,9 @@ namespace ReSharper.ReTs
 				info.FindAndMoveNgMethodsInsideFunction(info.ConstructorFunction.Block);
 				info.CreateFieldsFromConstructorParams();
 				//Replace Ng Controller body to its class name
-				ModificationUtil.ReplaceChild(info.ConstructorFunction, factory.CreateRefenceName(info.NameFull));
+				ModificationUtil.ReplaceChild(_index, factory.CreateRefenceName(info.NameFull));
 				//Insert ES6 class Before
-				ModificationUtil.AddChildBefore(parent.Parent, parent, factory.CreateModuleMember(info.TransformForTypescript(true)));
+				ModificationUtil.AddChildBefore(parent.Parent, parent, factory.CreateStatement(info.TransformForTypescript(true)));
 			}
 			
 			return null;

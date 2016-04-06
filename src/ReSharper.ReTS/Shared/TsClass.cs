@@ -11,6 +11,38 @@ using JetBrains.Util;
 
 namespace ReSharper.ReTs.Shared
 {
+	public class TsFunction
+	{
+		public ITreeNode Node;
+		public ITsParametersList Parameters;
+		public ITsBlock Block;
+		public TsFunction(ITsFunctionExpression expression)
+		{
+			Node = expression;
+			Parameters = expression.ParameterList;
+			Block = expression.Block;
+			//expression.GetText()
+		}
+
+		public TsFunction(ITsFunctionStatement statement)
+		{
+			Node = statement;
+			Parameters = statement.Signatures[0].Signature.ParameterList;
+			Block = statement.Block;
+		}
+
+		public static string ExtractName(ITsFunctionStatement statement)
+		{
+			return statement.DeclaredName;
+		}
+
+		public static string ExtractName(ITsObjectPropertyInitializer initializer)
+		{
+			//initializer.PropertyName.ProjectedName
+			return initializer.DeclaredName; 
+		}
+	}
+
 	public class TsClass
 	{
 		public String Namespace
@@ -33,16 +65,13 @@ namespace ReSharper.ReTs.Shared
 
 		public String NameFull;
 		public List<ITreeNode> Sources = new List<ITreeNode>();
-		public ITsFunctionExpression ConstructorFunction;
-		public Dictionary<String, List<ITreeNode>> Fields = new Dictionary<string, List<ITreeNode>>();
-		public List<ITsObjectPropertyInitializer> PrototypeMethods = new List<ITsObjectPropertyInitializer>();
-		public List<Tuple<string, ITsFunctionExpression>> PrototypeSeparateMethods = new List<Tuple<string, ITsFunctionExpression>>();
-		public List<Tuple<string, ITsFunctionStatement>> PrototypeSeparate2Methods = new List<Tuple<string, ITsFunctionStatement>>();
-		public List<ITsObjectPropertyInitializer> PrototypeFields = new List<ITsObjectPropertyInitializer>();
-		public List<ITsObjectPropertyInitializer> StaticMethods = new List<ITsObjectPropertyInitializer>();
-		public List<Tuple<string, ITsFunctionExpression>> StaticSeparateMethods = new List<Tuple<string, ITsFunctionExpression>>();
-		public List<ITsObjectPropertyInitializer> StaticFields = new List<ITsObjectPropertyInitializer>();
-
+		public TsFunction ConstructorFunction;
+		public Dictionary<String, ITreeNode> PrototypeFields = new Dictionary<string, ITreeNode>();
+		public Dictionary<String, ITreeNode> StaticFields = new Dictionary<string, ITreeNode>();
+		public List<Tuple<string, TsFunction>> StaticMethods = new List<Tuple<string, TsFunction>>();
+		public List<Tuple<string, TsFunction>> PrototypeMethods = new List<Tuple<string, TsFunction>>();
+		private bool handleThis;
+		
 		public void FindFieldsInsideFunction(ITsBlock body)
 		{
 			//Find Fields
@@ -64,9 +93,9 @@ namespace ReSharper.ReTs.Shared
 						{
 							name = name.Substring(0, end);
 						}
-						if (!Fields.ContainsKey(name))
+						if (!PrototypeFields.ContainsKey(name))
 						{
-							Fields.Add(name, null);
+							PrototypeFields.Add(name, null);
 						}
 					}
 				}
@@ -75,14 +104,13 @@ namespace ReSharper.ReTs.Shared
 		}
 		public void CreateFieldsFromConstructorParams()
 		{
-			TsElementFactory factory = TsElementFactory.GetInstance(ConstructorFunction);
-			var pars = ConstructorFunction.Parameters.ToArray();
-			foreach (var par in ConstructorFunction.Parameters)
+			TsElementFactory factory = TsElementFactory.GetInstance(ConstructorFunction.Block);
+			foreach (var par in ConstructorFunction.Parameters.Parameters)
 			{
 				var name = par.NameNode.GetText();
-				if (!Fields.ContainsKey(name))
+				if (!PrototypeFields.ContainsKey(name))
 				{
-					Fields.Add(name, null);
+					PrototypeFields.Add(name, null);
 					ConstructorFunction.Block.AddStatementAfter(factory.CreateStatement("this." + name + " = " + name + ";"), null);
 				}
 			}
@@ -107,7 +135,7 @@ namespace ReSharper.ReTs.Shared
 						if (name.IndexOf("[")>-1){ continue; }
 						if (expr.Source is ITsFunctionExpression)
 						{
-							PrototypeSeparateMethods.Add(new Tuple<string, ITsFunctionExpression>(name, expr.Source as ITsFunctionExpression));
+							PrototypeMethods.Add(new Tuple<string, TsFunction>(name, new TsFunction(expr.Source as ITsFunctionExpression)));
 							ModificationUtil.DeleteChild(expr);
 						}
 					}
@@ -117,8 +145,7 @@ namespace ReSharper.ReTs.Shared
 				if (instruction is ITsFunctionStatement)
 				{
 					var expr = (instruction as ITsFunctionStatement);
-					var name = expr.DeclaredName;
-					PrototypeSeparate2Methods.Add(new Tuple<string, ITsFunctionStatement>(name, expr));
+					PrototypeMethods.Add(new Tuple<string, TsFunction>(expr.DeclaredName, new TsFunction(expr)));
 					ModificationUtil.DeleteChild(expr);
 				}
 
@@ -131,7 +158,7 @@ namespace ReSharper.ReTs.Shared
 					{
 						if (declaration.Value is ITsFunctionExpression)
 						{
-							PrototypeSeparateMethods.Add(new Tuple<string, ITsFunctionExpression>(declaration.NameNode.GetText(), declaration.Value as ITsFunctionExpression));
+							PrototypeMethods.Add(new Tuple<string, TsFunction>(declaration.NameNode.GetText(),  new TsFunction(declaration.Value as ITsFunctionExpression)));
 							ModificationUtil.DeleteChild(declaration);
 						}
 					}
@@ -163,7 +190,7 @@ namespace ReSharper.ReTs.Shared
 						if (name.IndexOf("[") > -1) { continue; }
 						if (expr.Source is ITsFunctionExpression)
 						{
-							PrototypeSeparateMethods.Add(new Tuple<string, ITsFunctionExpression>(name, expr.Source as ITsFunctionExpression));
+							PrototypeMethods.Add(new Tuple<string, TsFunction>(name, new TsFunction(expr.Source as ITsFunctionExpression)));
 							ModificationUtil.ReplaceChild(expr, factory.CreateStatement("$scope." + name + " = this." + name + ".bind(this);"));
 						}
 					}
@@ -171,147 +198,7 @@ namespace ReSharper.ReTs.Shared
 			}
 		}
 
-		//TODO: Possible need more wise implementation, like treewalker
-		private string AddThisIfNeeded(string source)
-		{
-			foreach (var key in Fields.Keys)
-			{
-				source = source.Replace(key, "this." + key);
-			}
-			foreach (var m in PrototypeMethods)
-			{
-				source = source.Replace(m.PropertyName.ProjectedName, "this." + m.PropertyName.ProjectedName);
-			}
-			foreach (var m in PrototypeSeparateMethods)
-			{
-				source = source.Replace(m.Item1, "this." + m.Item1);
-			}
-			foreach (var m in PrototypeSeparate2Methods)
-			{
-				source = source.Replace(m.Item1, "this." + m.Item1);
-			}
-			source = source.Replace(".this.", ".");
-			source = source.Replace("this.this.", "this.");
-			source = source.Replace("this.this.", "this.");
-			
-			source = source.Replace("this.this.", "this.");
-			source = Regex.Replace(source, "this\\.([\\w]+:)", "$1");
 		
-			return source;
-		}
-
-		public string TransformForTypescript(bool handleThis=false)
-		{
-			var result = new StringBuilder();
-
-			if (Namespace != "")
-			{
-				result.AppendLine(string.Format("module {0} {{", Namespace));
-				result.AppendLine();
-			}
-			result.AppendLine(string.Format("export class {0} {{", Name));
-			result.AppendLine();
-			foreach (var field in Fields.Keys)
-			{
-				result.AppendLine(field.StartsWith("_")
-									  ? string.Format("\tprivate {0}=null;", field)
-									  : string.Format("\tpublic {0}=null;", field));
-			}
-			foreach (var field in StaticFields)
-			{
-				result.AppendLine(field.PropertyName.ProjectedName.StartsWith("_")
-									  ? string.Format("\tprivate static {0}={1};", field.PropertyName.ProjectedName, field.Value.GetText())
-									  : string.Format("\tpublic static {0}={1};", field.PropertyName.ProjectedName, field.Value.GetText()));
-			}
-			if (ConstructorFunction != null)
-			{
-				result.AppendLine(string.Format("\tconstructor({0}){{",
-					ConstructorFunction.Parameters.Select(p => p.GetText()).Join(",")));
-				foreach (var field in PrototypeFields)
-				{
-					result.AppendLine(field.GetText().Replace(":", "="));
-				}
-				var body = ConstructorFunction.Block.GetText().Trim('{', '}');
-				if (handleThis)
-				{
-					body = AddThisIfNeeded(body);
-				}
-				result.AppendLine(body);
-				result.AppendLine(string.Format("\t}}"));
-			}
-
-			foreach (var method in PrototypeMethods)
-			{
-				var text = method.Value.GetText().Trim();
-				if (text.StartsWith("function"))
-				{
-					text = text.Substring(8);
-				}
-				if (handleThis)
-				{
-					text = AddThisIfNeeded(text);
-				}
-				result.AppendLine(string.Format("\t{0}{1}", method.PropertyName.ProjectedName, text));
-			}
-
-			foreach (var method in PrototypeSeparateMethods)
-			{
-				var text = method.Item2.GetText().Trim();
-				if (text.StartsWith("function"))
-				{
-					text = text.Substring(8);
-				}
-				if (handleThis)
-				{
-					text = AddThisIfNeeded(text);
-				}
-				result.AppendLine(string.Format("\t{0}{1}", method.Item1, text));
-			}
-			foreach (var method in PrototypeSeparate2Methods)
-			{
-				if (method.Item2.Signatures.Count > 0)
-				{
-					var pars = method.Item2.Signatures[0].Signature.ParameterList.GetText();
-					var block = method.Item2.Block.GetText();
-					if (handleThis)
-					{
-						block = AddThisIfNeeded(block);
-					}
-					result.AppendLine(string.Format("\t{0}({1}){2}", method.Item1, pars, block));
-				}
-			}
-
-			foreach (var method in StaticMethods)
-			{
-				var text = method.Value.GetText().Trim();
-				if (text.StartsWith("function"))
-				{
-					text = text.Substring(8);
-				}
-				text = text.Replace("this.", Name + ".");
-				result.AppendLine(string.Format("\tstatic {0}{1}", method.PropertyName.ProjectedName, text));
-			}
-
-			foreach (var method in StaticSeparateMethods)
-			{
-				var text = method.Item2.GetText().Trim();
-				if (text.StartsWith("function"))
-				{
-					text = text.Substring(8);
-				}
-				text = text.Replace("this.", Name + ".");
-				result.AppendLine(string.Format("\tstatic {0}{1}", method.Item1, text));
-			}
-
-			result.AppendLine(string.Format("}}"));
-			if (Namespace != "")
-			{
-				result.AppendLine(string.Format("}}"));
-			}
-
-			return result.ToString();
-		}
-
 		public Tuple<ITsSimpleAssignmentExpression, ITsObjectLiteral> FindPrototype(ITreeNode lookup)
 		{
 			for (int i = 0; i < 5; i++)
@@ -327,7 +214,7 @@ namespace ReSharper.ReTs.Shared
 					if (expr != null)
 					{
 						if (/*expr.IsAssignment &&*/ expr.Dest is ITsReferenceExpression &&
-							expr.Dest.GetText() == this.NameFull + ".prototype" && expr.Source is ITsObjectLiteral)
+							expr.Dest.GetText() == NameFull + ".prototype" && expr.Source is ITsObjectLiteral)
 						{
 							return new Tuple<ITsSimpleAssignmentExpression, ITsObjectLiteral>(expr, expr.Source as ITsObjectLiteral);
 						}
@@ -340,8 +227,8 @@ namespace ReSharper.ReTs.Shared
 
 		public void CollectPrototypeSeparateMethods(ITreeNode lookup)
 		{
-			var suffix = this.NameFull + ".";
-			var suffixPrototype = this.NameFull + ".prototype.";
+			var suffix = NameFull + ".";
+			var suffixPrototype = NameFull + ".prototype.";
 			for (int i = 0; i < 100; i++)
 			{
 				if (lookup == null)
@@ -358,17 +245,18 @@ namespace ReSharper.ReTs.Shared
 						if (/*expr.IsAssignment &&*/ expr.Dest is ITsReferenceExpression &&
 							expr.Dest.GetText().StartsWith(suffix) && expr.Source is ITsFunctionExpression)
 						{
+							var f = (ITsFunctionExpression) expr.Source;
 							if (expr.Dest.GetText().StartsWith(suffixPrototype))
 							{
-								PrototypeSeparateMethods.Add(new Tuple<string, ITsFunctionExpression>(
+								PrototypeMethods.Add(new Tuple<string, TsFunction>(
 									expr.Dest.GetText().Substring(suffixPrototype.Length),
-									(ITsFunctionExpression)expr.Source));
+									new TsFunction(f)));
 							}
 							else
 							{
-								StaticSeparateMethods.Add(new Tuple<string, ITsFunctionExpression>(
+								StaticMethods.Add(new Tuple<string, TsFunction>(
 									expr.Dest.GetText().Substring(suffix.Length),
-									(ITsFunctionExpression)expr.Source));
+									new TsFunction(f)));
 							}
 							Sources.Add(lookup);
 						}
@@ -390,16 +278,12 @@ namespace ReSharper.ReTs.Shared
 				var fun = item.Value as ITsFunctionExpression;
 				if (fun != null)
 				{
-					this.PrototypeMethods.Add(item);
-					this.FindFieldsInsideFunction(fun.Block);
+					PrototypeMethods.Add(new Tuple<string, TsFunction>(item.DeclaredName, new TsFunction(fun)));
+					FindFieldsInsideFunction(fun.Block);
 				}
 				else
 				{
-					this.PrototypeFields.Add(item);
-					if (!this.Fields.ContainsKey(item.PropertyName.ProjectedName))
-					{
-						this.Fields.Add(item.PropertyName.ProjectedName, null);
-					}
+					PrototypeFields[item.DeclaredName] = item.Value;
 				}
 			}
 
@@ -417,14 +301,110 @@ namespace ReSharper.ReTs.Shared
 				var fun = item.Value as ITsFunctionExpression;
 				if (fun != null)
 				{
-					this.StaticMethods.Add(item);
+					StaticMethods.Add(new Tuple<string, TsFunction>(item.DeclaredName, new TsFunction(fun)));
 				}
 				else
 				{
-					this.StaticFields.Add(item);
+					StaticFields[item.DeclaredName] = item.Value;
 				}
 			}
 
 		}
+
+		//TODO: Possible need more wise implementation, like treewalker
+		private string AddThisIfNeeded(string source)
+		{
+			if (!handleThis)
+			{
+				return source;
+			}
+			foreach (var key in PrototypeFields.Keys)
+			{
+				source = source.Replace(key, "this." + key);
+			}
+			foreach (var m in PrototypeMethods)
+			{
+				source = source.Replace(m.Item1, "this." + m.Item1);
+			}
+			source = source.Replace(".this.", ".");
+			source = source.Replace("this.this.", "this.");
+			source = source.Replace("this.this.", "this.");
+
+			source = source.Replace("this.this.", "this.");
+			source = Regex.Replace(source, "this\\.([\\w]+:)", "$1");
+
+			return source;
+		}
+
+		public string TransformForTypescript(bool handleThis=false)
+		{
+			this.handleThis = handleThis;
+			var result = new StringBuilder();
+
+			if (Namespace != "")
+			{
+				result.AppendLine("module {0} {{", Namespace);
+				result.AppendLine();
+			}
+			result.AppendLine("class {0} {{", Name);
+			result.AppendLine();
+			foreach (var field in PrototypeFields)
+			{
+				result.AppendLine("\t{0} {1}={2};",
+					field.Key.StartsWith("_") ? "private" : "public",
+					field.Key,
+					"null"); //Value will be in constuctor
+			}
+			foreach (var field in StaticFields)
+			{
+				result.AppendLine("\t{0} static {1}={2};", 
+					field.Key.StartsWith("_") ? "private" : "public", 
+					field.Key, field.Value != null ? 
+					field.Value.GetText() : "null");
+			}
+			if (ConstructorFunction != null)
+			{
+				result.AppendLine("\tconstructor({0}){{", ConstructorFunction.Parameters.GetText());
+				foreach (var field in PrototypeFields)
+				{
+					if (field.Value != null)
+					{
+						result.AppendLine("\tthis.{0}={1};",
+							field.Key,
+							field.Value.GetText());
+					}
+				}
+				result.AppendLine(AddThisIfNeeded(ConstructorFunction.Block.GetText().Trim('{', '}')));
+				result.AppendLine("\t}");
+			}
+
+			foreach (var method in PrototypeMethods)
+			{
+				result.AppendLine(string.Format("\t{0} {1}({2}){3}", 
+					method.Item1.StartsWith("_") ? "private" : "public", 
+					method.Item1,
+					method.Item2.Parameters.GetText(),
+					AddThisIfNeeded(method.Item2.Block.GetText())));
+			}
+
+			foreach (var method in StaticMethods)
+			{
+				result.AppendLine(string.Format("\t{0} static {1}({2}){3}",
+					method.Item1.StartsWith("_") ? "private" : "public",
+					method.Item1,
+					method.Item2.Parameters.GetText(),
+					method.Item2.Block.GetText().Replace("this.", Name + ".")));
+			}
+
+			result.AppendLine("}");
+			if (Namespace != "")
+			{
+				result.AppendLine("}");
+			}
+
+			return result.ToString();
+		}
+
+		
 	}
 }
