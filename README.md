@@ -22,7 +22,9 @@ MyClass.prototype = {
 	private _f2: function() {}
 };
 MyClass.f3static: function() {}
-//OR
+
+//OR--------------------------------
+
 Namespace.MyClass = function/*{caret}*/(field2) {
 	this._field1 = false;
 	this._field2 = field2;
@@ -32,7 +34,9 @@ Namespace.MyClass.prototype = {
 	private _f2: function() {}
 };
 Namespace.MyClass.f3static: function() {}
-//OR
+
+//OR--------------------------------
+
 Namespace.MyClass = function/*{caret}*/(field2) {
 	this._field1 = false;
 	this._field2 = field2;
@@ -59,8 +63,7 @@ module Namespace{
 		public static f3() {}
 	}
 };
-;
-```c
+```
 
 ####Replace Static-styled code to ES6 Class
 
@@ -79,7 +82,7 @@ module Namespace {
 		static f1() {}
 		private static _f2() {}
 	}
-};
+}
 ```
 
 
