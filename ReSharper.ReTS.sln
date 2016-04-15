@@ -8,32 +8,42 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AA635E
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReSharper100", "ReSharper100", "{D68840A6-F883-45E4-A6CD-D4C4DADB5A2F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper100.ReTS", "src\ReSharper.ReTS\ReSharper100.ReTS.csproj", "{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper100.ReTS.Tests", "src\ReSharper.ReTS.Tests\ReSharper100.ReTS.Tests.csproj", "{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper110.ReTS", "src\ReSharper.ReTS\ReSharper110.ReTS.csproj", "{95A292A5-1F2B-47EE-81CC-5F5B79F48465}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}.Release|x86.ActiveCfg = Release|Any CPU
 		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Debug|x86.ActiveCfg = Debug|x86
+		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Debug|x86.Build.0 = Debug|x86
 		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Release|x86.ActiveCfg = Release|x86
+		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Release|x86.Build.0 = Release|x86
+		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7} = {D68840A6-F883-45E4-A6CD-D4C4DADB5A2F}
-		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9} = {D68840A6-F883-45E4-A6CD-D4C4DADB5A2F}
 	EndGlobalSection
 EndGlobal

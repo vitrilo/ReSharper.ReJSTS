@@ -49,7 +49,7 @@ Namespace.MyClass.f3static: function() {}
 By using "Convert to ES6 Class" on function (see caret position in example) will be replaced by: 
 ```javascript
 module Namespace{
-	export class MyClass {
+	class MyClass {
 		private _field1=null;
 		private _field2=null;
 
@@ -78,7 +78,7 @@ By using "Convert to ES6 Static Class" will be replaced by:
 
 ```javascript
 module Namespace {
-	export class MyStaticClass {
+	class MyStaticClass {
 		static f1() {}
 		private static _f2() {}
 	}

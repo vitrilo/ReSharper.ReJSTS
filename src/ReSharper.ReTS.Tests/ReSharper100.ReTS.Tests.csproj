@@ -177,7 +177,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ReSharper.ReTS\ReSharper100.ReTS.csproj">
       <Project>{d7ec7fa1-843c-42ec-b69c-a7edb0996fb7}</Project>
-      <Name>ClassLibrary1</Name>
+      <Name>ReSharper100.ReTS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
