@@ -1,0 +1,18 @@
+﻿mo{caret}dule Namespace.SubNamespace {
+
+export class Page {
+
+	private _needInit=null;
+	constructor(contentUrl){
+
+	this._needInit = false;
+
+	}
+	getIsMobilefunction () {
+		return true;
+	}
+	getSystemSwitcherfunction () {
+		return this._needInit;
+	}
+}
+}

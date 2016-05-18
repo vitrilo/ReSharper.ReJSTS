@@ -1,0 +1,1 @@
+".nuget\nuget" pack "ReSharper.ReTS\ReSharper5.ReTS.csproj" -OutputDirectory release

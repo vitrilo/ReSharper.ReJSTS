@@ -1,18 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AA635EB5-3BDD-4807-9924-64491368627A}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper4.ReTS", "ReSharper.ReTS\ReSharper4.ReTS.csproj", "{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper100.ReTS", "src\ReSharper.ReTS\ReSharper100.ReTS.csproj", "{D7EC7FA1-843C-42EC-B69C-A7EDB0996FB7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper100.ReTS.Tests", "src\ReSharper.ReTS.Tests\ReSharper100.ReTS.Tests.csproj", "{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper110.ReTS", "src\ReSharper.ReTS\ReSharper110.ReTS.csproj", "{95A292A5-1F2B-47EE-81CC-5F5B79F48465}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper4.ReTS.Tests", "ReSharper.ReTS.Tests\ReSharper4.ReTS.Tests.csproj", "{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,12 +27,6 @@ Global
 		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Release|x86.ActiveCfg = Release|x86
 		{FBBF1E02-F29A-4D38-929D-8D0AD72470A9}.Release|x86.Build.0 = Release|x86
-		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95A292A5-1F2B-47EE-81CC-5F5B79F48465}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

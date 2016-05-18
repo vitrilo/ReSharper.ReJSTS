@@ -2,10 +2,10 @@
 <package >
   <metadata>
     <id>ReSharper.ReTs.R100</id>
-    <version>0.7.1.1</version>
+    <version>1.4.0.1</version>
     <title>ReSharper ReTS</title>
     <authors>Anton Bogdan, Alexander Zaytsev</authors>
-    <owners>Hazzik</owners>
+    <owners>Anton Bogdan</owners>
     <licenseUrl>https://github.com/vitrilo/ReSharper.ReTS/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/vitrilo/ReSharper.ReTS</projectUrl>
     <!--<iconUrl></iconUrl>-->
@@ -17,7 +17,7 @@ May be useful for Angular 1x code (migration) converting to 2x (in progress), be
     <copyright>Copyright © Anton Bogdan, Alexander Zaytsev 2013-2016</copyright>
     <tags>ReSharper Refactorings JavaScript TypeScript Angular</tags>
     <dependencies>
-		<dependency id="Wave" version="[4.0,6.0)" />
+		<dependency id="Wave" version="[4.0]" />
     </dependencies>
   </metadata>
   <files>

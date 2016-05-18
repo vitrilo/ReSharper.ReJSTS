@@ -1,0 +1,29 @@
+﻿module SomeNamespace {
+	export class SomeClass {
+		public $scope=null;
+		public mainFormModel=null;
+		public dataAccess=null;
+
+		constructor($scope, mainFormModel, dataAccess) {
+			this.dataAccess = this.dataAccess;
+			this.mainFormModel = this.mainFormModel;
+			this.$scope = this.$scope;
+			this.$scope.logout = this.logout.bind(this);
+			var dataService = {
+				f1: this.f1,
+				f2: this.f2
+			};
+			return dataService;
+		}
+
+		f1(other) { var yy = 1 + 1; }
+
+		f_private(some) { var yy = 3 + 3; }
+
+		logout(third) {}
+
+		f2(fifth) { this.f_private(); }
+	}
+}
+
+(SomeNamespace.SomeClass)(window['$scope'], window['mainFormModel'], window['dataAccess']);
