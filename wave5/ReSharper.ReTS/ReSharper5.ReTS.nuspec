@@ -13,7 +13,7 @@
     <description>A set of refactorings for TypeScript language.
 Mainly useful for converting old-fashion code into ES6 Class in Typescript.
 May be useful for Angular 1x code (migration) converting to 2x (in progress), because it actively use ES6 Classes in Typescript</description>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>Added support of R#2016</releaseNotes>
     <copyright>Copyright © Anton Bogdan, Alexander Zaytsev 2013-2016</copyright>
     <tags>ReSharper Refactorings JavaScript TypeScript Angular</tags>
     <dependencies>

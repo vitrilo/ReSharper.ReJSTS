@@ -124,7 +124,8 @@ angular.controller("TestCtrl", ["$scope", "mainFormModel", "dataAccess", SomeCla
 
 Available in [ReSharper Gallery](https://resharper-plugins.jetbrains.com/packages/ReSharper.ReTs.R100/)
 
-- Comartible with Resharper #10 (any Visual Studio)
+- Compartible with Resharper #10 (any Visual Studio)
+- Compartible with Resharper #2016 (any Visual Studio)
 
 ####Notes
 Fork of "Resharper-ReJs" by Alexander Zaytsev
