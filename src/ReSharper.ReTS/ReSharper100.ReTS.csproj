@@ -158,7 +158,9 @@
     <Compile Include="ZoneMarker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.ReSharper100.ReJS.config" />
+    <None Include="packages.ReSharper100.ReJS.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ReSharper.ReTS.R100.nuspec">
       <SubType>Designer</SubType>
     </None>
